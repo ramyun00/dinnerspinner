@@ -2,6 +2,7 @@ import {GET_RESTAURANTS, SET_RESTAURANTS} from './restaurantActions';
 
 const initialState = {
   restaurants: [],
+  nextPageToken: '',
 };
 
 export default (state = initialState, action) => {
@@ -10,8 +11,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         restaurants: action.restaurants,
+        nextPageToken: action.nextPageToken || '',
       };
-    default:
-      return state;
   }
+  return state;
 };
