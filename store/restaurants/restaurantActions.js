@@ -10,7 +10,7 @@ export const getRestaurants = () => {
     const googlePlacesResponse = await fetch(
       `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${
         userLocation.latitude
-      },-73.9859&radius=1500&type=restaurant&keyword=food&opennow=true&pagetoken=${
+      },-73.9859&radius=3000&type=restaurant&keyword=food&opennow=true&pagetoken=${
         nextPageToken || ''
       }&key=${Env.GOOGLE_MAPS_KEY}`,
     );
