@@ -82,7 +82,7 @@ const PickerScreen = props => {
 };
 
 const styles = StyleSheet.create({
-  jobSearch: {
+  dinnerSpinner: {
     flex: 1,
     height: '100%',
     padding: 10,

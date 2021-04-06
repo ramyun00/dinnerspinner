@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Text, PermissionsAndroid} from 'react-native';
+import React, {useEffect} from 'react';
+import {PermissionsAndroid} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -116,7 +116,11 @@ const App = () => {
 
   function RootStackScreen() {
     return (
-      <RootStack.Navigator mode="modal">
+      <RootStack.Navigator
+        mode="modal"
+        screenOptions={{
+          headerShown: false,
+        }}>
         <RootStack.Screen name="Main" component={MainStackScreen} />
         <RootStack.Screen name="MyModal" component={MatchScreen} />
       </RootStack.Navigator>
