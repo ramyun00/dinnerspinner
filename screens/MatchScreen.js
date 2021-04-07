@@ -16,7 +16,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Env from '../Env';
 
 const MatchScreen = props => {
-  console.log('recipe props', props.route.params.foodData);
   const foodData = props.route.params.foodData;
   const beatAnimation = useRef(new Animated.Value(40)).current;
   const openLink = async type => {
@@ -56,10 +55,18 @@ const MatchScreen = props => {
           <Icon name="close-circle-outline" size={30} />
         </TouchableOpacity>
 
-        <Text style={{fontSize: 30, width: '90%', marginBottom: 40}}>
+        <Text style={{fontSize: 30, width: '90%', marginBottom: 20}}>
           {foodData.name || foodData.recipe.label}
         </Text>
-
+        <Text
+          style={{
+            fontFamily: 'DancingScript-Regular',
+            textAlign: 'center',
+            fontSize: 55,
+            marginBottom: 20,
+          }}>
+          It's a match!
+        </Text>
         <View
           style={{
             flex: 1,
@@ -150,9 +157,9 @@ const MatchScreen = props => {
           // Recipe content
           <View>
             <Text style={{marginBottom: 20}}>
-              Approximate time:
+              Approximate time:&nbsp;
               {foodData.recipe.totalTime == 0
-                ? ' Unknown'
+                ? 'Unknown'
                 : foodData.recipe.totalTime + ' min'}
             </Text>
             <Text style={{fontWeight: 'bold'}}>Ingredients</Text>

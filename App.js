@@ -4,9 +4,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import GetLocation from 'react-native-get-location';
-import {createStore, combineReducers, applyMiddleware} from 'redux';
+import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import {Provider, useDispatch} from 'react-redux';
 import ReduxThunk from 'redux-thunk';
+import {composeWithDevTools} from 'redux-devtools-extension';
 
 import PickerScreen from './screens/PickerScreen';
 import ProfileScreen from './screens/MyProfileScreen';
@@ -30,7 +31,10 @@ const rootReducer = combineReducers({
   user: userReducer,
 });
 
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+const store = createStore(
+  rootReducer,
+  compose(applyMiddleware(ReduxThunk), composeWithDevTools()),
+);
 
 const App = () => {
   const dispatch = useDispatch();

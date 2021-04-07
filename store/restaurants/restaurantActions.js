@@ -10,12 +10,14 @@ export const getRestaurants = () => {
     const googlePlacesResponse = await fetch(
       `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${
         userLocation.latitude
-      },-73.9859&radius=3000&type=restaurant&keyword=food&opennow=true&pagetoken=${
+      },${
+        userLocation.longitude
+      }&radius=3000&type=restaurant&keyword=korean&opennow=true&pagetoken=${
         nextPageToken || ''
       }&key=${Env.GOOGLE_MAPS_KEY}`,
     );
     const result = await googlePlacesResponse.json();
-
+    console.log('result', result.results[0].name);
     dispatch({
       type: SET_RESTAURANTS,
       restaurants: result.results,

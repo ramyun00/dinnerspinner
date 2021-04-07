@@ -7,13 +7,19 @@ import {
   Dimensions,
   Animated,
   PanResponder,
+  Button,
 } from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch, connect} from 'react-redux';
 import * as restaurantActions from '../store/restaurants/restaurantActions';
 import Env from '../Env';
+import {getFocusedRouteNameFromRoute} from '@react-navigation/core';
 
 const RestaurantScreen = props => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const restaurants = useSelector(state => state.restaurants.restaurants);
+  const nextPageToken = useSelector(state => state.restaurants.nextPageToken);
+  const [noMoreRestaurants, setNoMoreRestaurants] = useState(false);
+
   const SCREEN_HEIGHT = Dimensions.get('window').height;
   const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -51,7 +57,7 @@ const RestaurantScreen = props => {
       ...position.getTranslateTransform(),
     ],
   };
-  const restaurants = useSelector(state => state.restaurants.restaurants);
+
   const panResponderThing = PanResponder.create({
     onStartShouldSetPanResponder: (evt, gestureState) => true,
     onPanResponderMove: (evt, gestureState) => {
@@ -93,13 +99,20 @@ const RestaurantScreen = props => {
 
   const dispatch = useDispatch();
 
-  const getRestaurants = useCallback(async () => {
-    try {
-      await dispatch(restaurantActions.getRestaurants());
-    } catch (err) {
-      console.warn('Get restaurants action failed', err);
-    }
-  }, [dispatch]);
+  const getRestaurants = useCallback(
+    async reload => {
+      try {
+        await dispatch(restaurantActions.getRestaurants());
+      } catch (err) {
+        console.warn('Get restaurants action failed', err);
+      }
+
+      if (reload) {
+        setCurrentIndex(0);
+      }
+    },
+    [dispatch],
+  );
 
   useEffect(() => {
     getRestaurants();
@@ -147,6 +160,7 @@ const RestaurantScreen = props => {
                         fontSize: 32,
                         fontWeight: '800',
                         padding: 10,
+                        fontWeight: 'bold',
                       }}>
                       LIKE
                     </Text>
@@ -168,6 +182,7 @@ const RestaurantScreen = props => {
                         fontSize: 32,
                         fontWeight: '800',
                         padding: 10,
+                        fontWeight: 'bold',
                       }}>
                       NOPE
                     </Text>
@@ -247,6 +262,11 @@ const RestaurantScreen = props => {
             alignItems: 'center',
           }}>
           <Text style={{fontSize: 20}}>Womp womp</Text>
+          {nextPageToken ? (
+            <Button title="See more" onPress={() => getRestaurants(true)} />
+          ) : (
+            <Text>No more restaurants</Text>
+          )}
         </View>
       </View>
       <View style={{height: 60}} />

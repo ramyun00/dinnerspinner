@@ -1,3 +1,4 @@
+import {cloneDeep} from 'lodash';
 import {GET_RESTAURANTS, SET_RESTAURANTS} from './restaurantActions';
 
 const initialState = {

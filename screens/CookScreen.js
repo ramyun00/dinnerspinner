@@ -147,6 +147,7 @@ const CookScreen = props => {
                         fontSize: 32,
                         fontWeight: '800',
                         padding: 10,
+                        fontWeight: 'bold',
                       }}>
                       LIKE
                     </Text>
@@ -168,6 +169,7 @@ const CookScreen = props => {
                         fontSize: 32,
                         fontWeight: '800',
                         padding: 10,
+                        fontWeight: 'bold',
                       }}>
                       NOPE
                     </Text>
