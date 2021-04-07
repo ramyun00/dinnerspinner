@@ -31,21 +31,22 @@ const PickerScreen = props => {
           })
           .__getValue(),
       );
-      console.log(numOfDegrees);
-      console.log(numOfDegrees % 360);
+
       if (numOfDegrees % 360 < 180) {
-        console.log('restaurant wins');
         Alert.alert('Time to put pants on!', '', [
           {
             text: 'Yay restaurant!',
             onPress: () => props.navigation.navigate('restaurant'),
           },
-          {text: 'Nah', style: 'cancel'},
+          {text: 'Try Again', style: 'cancel'},
         ]);
       } else {
         Alert.alert('Do you have anything in the fridge?', '', [
-          {text: 'Womp womp', onPress: () => props.navigation.navigate('cook')},
-          {text: 'Reject cooking', style: 'cancel'},
+          {
+            text: 'Maybe ketchup?',
+            onPress: () => props.navigation.navigate('cook'),
+          },
+          {text: 'Try Again', style: 'cancel'},
         ]);
       }
     });

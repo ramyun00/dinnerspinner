@@ -13,7 +13,6 @@ import * as cookActions from '../store/cook/cookActions';
 import Env from '../Env';
 
 const CookScreen = props => {
-  console.log('props', props);
   const [currentIndex, setCurrentIndex] = useState(0);
   const SCREEN_HEIGHT = Dimensions.get('window').height;
   const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -67,6 +66,9 @@ const CookScreen = props => {
           useNativeDriver: true,
         }).start(() => {
           setCurrentIndex(currentIndex + 1);
+          props.navigation.navigate('match', {
+            foodData: recipes[currentIndex],
+          });
         });
       } else if (gestureState.dx < -120) {
         // swipe left
@@ -85,13 +87,6 @@ const CookScreen = props => {
       }
     },
   });
-
-  // useEffect(() => {
-  //   const unsubscribe = props.navigation.addListener('focus', () => {
-  //     console.log('IM BACK');
-  //   });
-  //   return unsubscribe;
-  // }, [props.navigation]);
 
   useEffect(() => {
     position.setValue({x: 0, y: 0});
@@ -114,7 +109,6 @@ const CookScreen = props => {
   return (
     <View style={{flex: 1}}>
       <View style={{height: 30}} />
-
       <View style={{flex: 1}}>
         {recipes
           .map((recipe, i) => {
@@ -192,21 +186,26 @@ const CookScreen = props => {
                       }}
                     />
                   ) : null}
-                  <Text
+                  <View
                     style={{
+                      width: '90%',
                       position: 'absolute',
                       bottom: 20,
                       left: 20,
                       zIndex: 1000,
-                      color: 'white',
-                      fontSize: 20,
-                      padding: 10,
                       backgroundColor: 'rgba(0, 0, 0, 0.3)',
                     }}>
-                    {recipe.recipe.label}
-                    {'\n'}
-                    {recipe.recipe.vicinity}
-                  </Text>
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: 20,
+                        padding: 10,
+                      }}>
+                      {recipe.recipe.label}
+                      {'\n'}
+                      {recipe.recipe.vicinity}
+                    </Text>
+                  </View>
                 </Animated.View>
               );
             } else {

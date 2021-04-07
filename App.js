@@ -51,6 +51,7 @@ const App = () => {
           timeout: 15000,
         })
           .then(location => {
+            console.log('location granted', location);
             dispatch(userActions.setUserLocation(location));
           })
           .catch(error => {
@@ -122,7 +123,7 @@ const App = () => {
           headerShown: false,
         }}>
         <RootStack.Screen name="Main" component={MainStackScreen} />
-        <RootStack.Screen name="MyModal" component={MatchScreen} />
+        <RootStack.Screen name="match" component={MatchScreen} />
       </RootStack.Navigator>
     );
   }

@@ -65,6 +65,9 @@ const RestaurantScreen = props => {
           useNativeDriver: true,
         }).start(() => {
           setCurrentIndex(currentIndex + 1);
+          props.navigation.navigate('match', {
+            foodData: restaurants[currentIndex],
+          });
         });
       } else if (gestureState.dx < -120) {
         // swipe left
@@ -183,21 +186,24 @@ const RestaurantScreen = props => {
                       }}
                     />
                   ) : null}
-                  <Text
-                    style={{
-                      position: 'absolute',
-                      bottom: 20,
-                      left: 20,
-                      zIndex: 1000,
-                      color: 'white',
-                      fontSize: 20,
-                      padding: 10,
-                      backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                    }}>
-                    {restaurant.name}
-                    {'\n'}
-                    {restaurant.vicinity}
-                  </Text>
+                  <View style={{width: '90%'}}>
+                    <Text
+                      style={{
+                        position: 'absolute',
+                        bottom: 20,
+                        left: 20,
+                        zIndex: 1000,
+                        color: 'white',
+                        fontSize: 20,
+                        padding: 10,
+                        width: '90%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                      }}>
+                      {restaurant.name}
+                      {'\n'}
+                      {restaurant.vicinity}
+                    </Text>
+                  </View>
                 </Animated.View>
               );
             } else {

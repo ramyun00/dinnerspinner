@@ -7,7 +7,7 @@ export const getRecipes = () => {
   return async (dispatch, getState) => {
     const userLocation = getState().user.location;
     const edamamResponse = await fetch(
-      `https://api.edamam.com/search?q=yummy&mealtype=dinner&from=0&to=30&app_id=${Env.EDAMAM_APP_ID}&app_key=${Env.EDAMAM_APP_KEY}`,
+      `https://api.edamam.com/search?q=dinner&mealtype=dinner&from=0&to=30&app_id=${Env.EDAMAM_APP_ID}&app_key=${Env.EDAMAM_APP_KEY}`,
     );
     const result = await edamamResponse.json();
     dispatch({
