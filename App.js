@@ -16,11 +16,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Colors from './constants/Colors';
 import RestaurantScreen from './screens/RestaurantScreen';
 import MatchScreen from './screens/MatchScreen';
+import AuthScreen from './screens/AuthScreen';
 
 import restaurantReducer from './store/restaurants/restaurantReducer';
 import userReducer from './store/user/userReducer';
 import * as userActions from './store/user/userActions';
 import cookReducer from './store/cook/cookReducer';
+import errorReducer from './store/errors/errorReducer';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -29,12 +31,10 @@ const rootReducer = combineReducers({
   restaurants: restaurantReducer,
   recipes: cookReducer,
   user: userReducer,
+  errors: errorReducer,
 });
 
-const store = createStore(
-  rootReducer,
-  compose(applyMiddleware(ReduxThunk), composeWithDevTools()),
-);
+const store = createStore(rootReducer, compose(applyMiddleware(ReduxThunk)));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -43,8 +43,7 @@ const App = () => {
       const permission = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
         {
-          title: 'Coarse location permission',
-          buttonNeutral: 'Ask Me Later',
+          title: 'I can haz ur location?',
           buttonNegative: 'Cancel',
           buttonPositive: 'OK',
         },
@@ -128,6 +127,7 @@ const App = () => {
         }}>
         <RootStack.Screen name="Main" component={MainStackScreen} />
         <RootStack.Screen name="match" component={MatchScreen} />
+        <RootStack.Screen name="auth" component={AuthScreen} />
       </RootStack.Navigator>
     );
   }

@@ -1,4 +1,4 @@
-import {SET_USER_LOCATION} from './userActions';
+import {SET_USER_LOCATION, SIGNUP} from './userActions';
 
 const initialState = {
   user: {},
@@ -6,6 +6,11 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case SIGNUP:
+      return {
+        token: action.token,
+        userId: action.userId,
+      };
     case SET_USER_LOCATION:
       return {
         ...state,

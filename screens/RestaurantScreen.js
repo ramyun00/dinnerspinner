@@ -9,16 +9,16 @@ import {
   PanResponder,
   Button,
 } from 'react-native';
-import {useSelector, useDispatch, connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import * as restaurantActions from '../store/restaurants/restaurantActions';
 import Env from '../Env';
-import {getFocusedRouteNameFromRoute} from '@react-navigation/core';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const RestaurantScreen = props => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const nextPageToken = useSelector(state => state.restaurants.nextPageToken);
-  const [noMoreRestaurants, setNoMoreRestaurants] = useState(false);
 
   const SCREEN_HEIGHT = Dimensions.get('window').height;
   const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -101,12 +101,13 @@ const RestaurantScreen = props => {
 
   const getRestaurants = useCallback(
     async reload => {
+      setIsLoading(true);
       try {
         await dispatch(restaurantActions.getRestaurants());
       } catch (err) {
         console.warn('Get restaurants action failed', err);
       }
-
+      setIsLoading(false);
       if (reload) {
         setCurrentIndex(0);
       }
@@ -121,7 +122,6 @@ const RestaurantScreen = props => {
   return (
     <View style={{flex: 1}}>
       <View style={{height: 30}} />
-
       <View style={{flex: 1}}>
         {restaurants
           .map((restaurant, i) => {
@@ -152,18 +152,7 @@ const RestaurantScreen = props => {
                       left: 40,
                       zIndex: 1000,
                     }}>
-                    <Text
-                      style={{
-                        borderWidth: 1,
-                        borderColor: 'green',
-                        color: 'green',
-                        fontSize: 32,
-                        fontWeight: '800',
-                        padding: 10,
-                        fontWeight: 'bold',
-                      }}>
-                      LIKE
-                    </Text>
+                    <Text style={styles.likeText}>LIKE</Text>
                   </Animated.View>
                   <Animated.View
                     style={{
@@ -174,46 +163,18 @@ const RestaurantScreen = props => {
                       right: 40,
                       zIndex: 1000,
                     }}>
-                    <Text
-                      style={{
-                        borderWidth: 1,
-                        borderColor: 'red',
-                        color: 'red',
-                        fontSize: 32,
-                        fontWeight: '800',
-                        padding: 10,
-                        fontWeight: 'bold',
-                      }}>
-                      NOPE
-                    </Text>
+                    <Text style={styles.nopeText}>NOPE</Text>
                   </Animated.View>
                   {restaurant.photos ? (
                     <Image
-                      style={{
-                        flex: 1,
-                        height: null,
-                        width: null,
-                        resizeMode: 'cover',
-                        borderRadius: 20,
-                      }}
+                      style={styles.restaurantPhoto}
                       source={{
                         uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${restaurant.photos[0].photo_reference}&key=${Env.GOOGLE_MAPS_KEY}`,
                       }}
                     />
                   ) : null}
                   <View style={{width: '90%'}}>
-                    <Text
-                      style={{
-                        position: 'absolute',
-                        bottom: 20,
-                        left: 20,
-                        zIndex: 1000,
-                        color: 'white',
-                        fontSize: 20,
-                        padding: 10,
-                        width: '90%',
-                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                      }}>
+                    <Text style={styles.restaurantName}>
                       {restaurant.name}
                       {'\n'}
                       {restaurant.vicinity}
@@ -236,13 +197,7 @@ const RestaurantScreen = props => {
                   }}>
                   {restaurant.photos ? (
                     <Image
-                      style={{
-                        flex: 1,
-                        height: null,
-                        width: null,
-                        resizeMode: 'cover',
-                        borderRadius: 20,
-                      }}
+                      style={styles.restaurantPhoto}
                       source={{
                         uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${restaurant.photos[0].photo_reference}&key=${Env.GOOGLE_MAPS_KEY}`,
                       }}
@@ -275,14 +230,41 @@ const RestaurantScreen = props => {
 };
 
 const styles = StyleSheet.create({
-  text: {
-    color: 'black',
-    fontSize: 20,
+  likeText: {
+    borderWidth: 1,
+    borderColor: 'green',
+    color: 'green',
+    fontSize: 32,
+    fontWeight: '800',
+    padding: 10,
+    fontWeight: 'bold',
   },
-  image: {
-    width: 400,
-    height: 400,
-    resizeMode: 'contain',
+  nopeText: {
+    borderWidth: 1,
+    borderColor: 'red',
+    color: 'red',
+    fontSize: 32,
+    fontWeight: '800',
+    padding: 10,
+    fontWeight: 'bold',
+  },
+  restaurantPhoto: {
+    flex: 1,
+    height: null,
+    width: null,
+    resizeMode: 'cover',
+    borderRadius: 20,
+  },
+  restaurantName: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    zIndex: 1000,
+    color: 'white',
+    fontSize: 20,
+    padding: 10,
+    width: '90%',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
 });
 

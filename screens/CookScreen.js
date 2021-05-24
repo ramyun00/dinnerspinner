@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as cookActions from '../store/cook/cookActions';
-import Env from '../Env';
+import {stripAmpersand} from '../util/util';
 
 const CookScreen = props => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -139,18 +139,7 @@ const CookScreen = props => {
                       left: 40,
                       zIndex: 1000,
                     }}>
-                    <Text
-                      style={{
-                        borderWidth: 1,
-                        borderColor: 'green',
-                        color: 'green',
-                        fontSize: 32,
-                        fontWeight: '800',
-                        padding: 10,
-                        fontWeight: 'bold',
-                      }}>
-                      LIKE
-                    </Text>
+                    <Text style={styles.likeText}>LIKE</Text>
                   </Animated.View>
                   <Animated.View
                     style={{
@@ -161,51 +150,24 @@ const CookScreen = props => {
                       right: 40,
                       zIndex: 1000,
                     }}>
-                    <Text
-                      style={{
-                        borderWidth: 1,
-                        borderColor: 'red',
-                        color: 'red',
-                        fontSize: 32,
-                        fontWeight: '800',
-                        padding: 10,
-                        fontWeight: 'bold',
-                      }}>
-                      NOPE
-                    </Text>
+                    <Text style={styles.nopeText}>NOPE</Text>
                   </Animated.View>
                   {recipe.recipe.image ? (
                     <Image
-                      style={{
-                        flex: 1,
-                        height: null,
-                        width: null,
-                        resizeMode: 'cover',
-                        borderRadius: 20,
-                      }}
+                      style={styles.recipeImage}
                       source={{
                         uri: recipe.recipe.image,
                       }}
                     />
                   ) : null}
-                  <View
-                    style={{
-                      width: '90%',
-                      position: 'absolute',
-                      bottom: 20,
-                      left: 20,
-                      zIndex: 1000,
-                      backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                    }}>
+                  <View style={styles.recipeTitleWrapper}>
                     <Text
                       style={{
                         color: 'white',
                         fontSize: 20,
                         padding: 10,
                       }}>
-                      {recipe.recipe.label}
-                      {'\n'}
-                      {recipe.recipe.vicinity}
+                      {stripAmpersand(recipe.recipe.label)}
                     </Text>
                   </View>
                 </Animated.View>
@@ -225,13 +187,7 @@ const CookScreen = props => {
                   }}>
                   {recipe.recipe.image ? (
                     <Image
-                      style={{
-                        flex: 1,
-                        height: null,
-                        width: null,
-                        resizeMode: 'cover',
-                        borderRadius: 20,
-                      }}
+                      style={styles.recipeImage}
                       source={{
                         uri: recipe.recipe.image,
                       }}
@@ -242,16 +198,6 @@ const CookScreen = props => {
             }
           })
           .reverse()}
-        {/* <View
-          style={{
-            position: 'relative',
-            zIndex: 1,
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{fontSize: 20}}>Womp womp</Text>
-        </View> */}
       </View>
       <View style={{height: 60}} />
     </View>
@@ -267,6 +213,39 @@ const styles = StyleSheet.create({
     width: 400,
     height: 400,
     resizeMode: 'contain',
+  },
+  likeText: {
+    borderWidth: 1,
+    borderColor: 'green',
+    color: 'green',
+    fontSize: 32,
+    fontWeight: '800',
+    padding: 10,
+    fontWeight: 'bold',
+  },
+  nopeText: {
+    borderWidth: 1,
+    borderColor: 'red',
+    color: 'red',
+    fontSize: 32,
+    fontWeight: '800',
+    padding: 10,
+    fontWeight: 'bold',
+  },
+  recipeImage: {
+    flex: 1,
+    height: null,
+    width: null,
+    resizeMode: 'cover',
+    borderRadius: 20,
+  },
+  recipeTitleWrapper: {
+    width: '90%',
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    zIndex: 1000,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
 });
 

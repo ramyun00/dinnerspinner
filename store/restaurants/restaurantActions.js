@@ -12,12 +12,12 @@ export const getRestaurants = () => {
         userLocation.latitude
       },${
         userLocation.longitude
-      }&radius=3000&type=restaurant&keyword=korean&opennow=true&pagetoken=${
+      }&radius=3000&type=restaurant&keyword=food&opennow=true&pagetoken=${
         nextPageToken || ''
       }&key=${Env.GOOGLE_MAPS_KEY}`,
     );
     const result = await googlePlacesResponse.json();
-    console.log('result', result.results[0].name);
+
     dispatch({
       type: SET_RESTAURANTS,
       restaurants: result.results,

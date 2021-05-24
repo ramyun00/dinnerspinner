@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Env from '../Env';
+import {stripAmpersand} from '../util/util';
 
 const MatchScreen = props => {
   const foodData = props.route.params.foodData;
@@ -44,52 +45,21 @@ const MatchScreen = props => {
 
   return (
     <ScrollView style={{flex: 1}}>
-      <View
-        style={{
-          padding: 20,
-          width: '100%',
-        }}>
+      <View style={styles.wrapper}>
         <TouchableOpacity
           onPress={() => props.navigation.goBack()}
-          style={{position: 'absolute', right: 20, top: 20}}>
+          style={styles.xButton}>
           <Icon name="close-circle-outline" size={30} />
         </TouchableOpacity>
 
-        <Text style={{fontSize: 30, width: '90%', marginBottom: 20}}>
-          {foodData.name || foodData.recipe.label}
+        <Text style={styles.title}>
+          {foodData.name || stripAmpersand(foodData.recipe.label)}
         </Text>
-        <Text
-          style={{
-            fontFamily: 'DancingScript-Regular',
-            textAlign: 'center',
-            fontSize: 55,
-            marginBottom: 20,
-          }}>
-          It's a match!
-        </Text>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            position: 'relative',
-            justifyContent: 'center',
-            width: '100%',
-            marginBottom: 40,
-          }}>
-          <View
-            style={{
-              height: 100,
-              width: 100,
-              marginRight: 40,
-            }}>
+        <Text style={styles.matchText}>It's a match!</Text>
+        <View style={styles.bodyWrapper}>
+          <View style={styles.photoWrapper}>
             <Image
-              style={{
-                resizeMode: 'cover',
-                height: '100%',
-                width: '100%',
-                borderRadius: 100 / 2,
-              }}
+              style={styles.photo}
               source={{
                 uri: foodData.business_status
                   ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${foodData.photos[0].photo_reference}&key=${Env.GOOGLE_MAPS_KEY}`
@@ -106,29 +76,13 @@ const MatchScreen = props => {
               borderRadius: 50 / 2,
             }}>
             <Image
-              style={{
-                resizeMode: 'cover',
-                height: '100%',
-                width: '100%',
-                borderRadius: 50 / 2,
-              }}
+              style={styles.heart}
               source={require('../assets/heart.png')}
             />
           </Animated.View>
-          <View
-            style={{
-              height: 100,
-              width: 100,
-              backgroundColor: 'pink',
-              borderRadius: 100 / 2,
-            }}>
+          <View style={styles.profileIconWrapper}>
             <Image
-              style={{
-                resizeMode: 'cover',
-                height: '100%',
-                width: '100%',
-                borderRadius: 100 / 2,
-              }}
+              style={styles.profileIcon}
               source={require('../assets/personWithFork.png')}
             />
           </View>
@@ -136,17 +90,15 @@ const MatchScreen = props => {
         {foodData.business_status ? (
           // Restaurant content
           <View>
-            {/* Wrapper for profile pictures */}
-
-            <View>
+            <View style={styles.mapWrapper}>
               <Image
-                style={{width: '100%', height: 200}}
+                style={styles.map}
                 source={{
-                  uri: `https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=300x300&maptype=roadmap&markers=color:green%7Clabel:%7C${foodData.geometry.location.lat},${foodData.geometry.location.lng}&key=${Env.GOOGLE_MAPS_KEY}`,
+                  uri: `https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=300x300&maptype=roadmap&markers=color:red%7Clabel:%7C${foodData.geometry.location.lat},${foodData.geometry.location.lng}&key=${Env.GOOGLE_MAPS_KEY}`,
                 }}
               />
             </View>
-            <View style={{marginVertical: 20, flex: 1}}>
+            <View style={styles.openMapsButtonWrapper}>
               <Button
                 onPress={() => openLink('google')}
                 title="Open in Google Maps"
@@ -156,20 +108,20 @@ const MatchScreen = props => {
         ) : (
           // Recipe content
           <View>
-            <Text style={{marginBottom: 20}}>
+            <Text style={styles.recipeTime}>
               Approximate time:&nbsp;
               {foodData.recipe.totalTime == 0
                 ? 'Unknown'
                 : foodData.recipe.totalTime + ' min'}
             </Text>
-            <Text style={{fontWeight: 'bold'}}>Ingredients</Text>
+            <Text style={styles.recipeIngredients}>Ingredients</Text>
             {foodData.recipe.ingredientLines.map((ingredient, i) => (
               <Text key={i}>{ingredient}</Text>
             ))}
-            <Text style={{textAlign: 'center', marginTop: 20}}>
+            <Text style={styles.recipeSource}>
               Source: {foodData.recipe.source}
             </Text>
-            <View style={{marginVertical: 20, flex: 1}}>
+            <View style={styles.goToRecipeButtonWrapper}>
               <Button onPress={() => openLink('recipe')} title="Go to recipe" />
             </View>
           </View>
@@ -179,6 +131,66 @@ const MatchScreen = props => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  wrapper: {
+    padding: 20,
+    width: '100%',
+  },
+  xButton: {position: 'absolute', right: 20, top: 20},
+  title: {fontSize: 30, width: '90%', marginBottom: 20},
+  matchText: {
+    fontFamily: 'DancingScript-Regular',
+    textAlign: 'center',
+    fontSize: 55,
+    marginBottom: 20,
+  },
+  bodyWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+    justifyContent: 'center',
+    width: '100%',
+    marginBottom: 40,
+  },
+  photo: {
+    resizeMode: 'cover',
+    height: '100%',
+    width: '100%',
+    borderRadius: 100 / 2,
+  },
+  photoWrapper: {
+    height: 100,
+    width: 100,
+    marginRight: 40,
+  },
+  heart: {
+    resizeMode: 'cover',
+    height: '100%',
+    width: '100%',
+    borderRadius: 50 / 2,
+  },
+  profileIconWrapper: {
+    height: 100,
+    width: 100,
+    backgroundColor: 'pink',
+    borderRadius: 100 / 2,
+  },
+  profileIcon: {
+    resizeMode: 'cover',
+    height: '100%',
+    width: '100%',
+    borderRadius: 100 / 2,
+  },
+  openMapsButtonWrapper: {width: '100%', height: 200},
+  mapWrapper: {
+    marginBottom: 10,
+  },
+  map: {width: '100%', height: 200},
+  recipeTime: {fontWeight: 'bold', marginBottom: 10},
+  recipeIngredients: {fontWeight: 'bold'},
+  recipeSource: {marginTop: 20, textAlign: 'center'},
+  goToRecipeButtonWrapper: {marginVertical: 20, flex: 1},
+});
 
 export default MatchScreen;

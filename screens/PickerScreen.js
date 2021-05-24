@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useRef} from 'react';
 import {
   View,
   Text,
@@ -8,8 +8,6 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-
-import Colors from '../constants/Colors';
 
 const PickerScreen = props => {
   const arrowRef = useRef();
@@ -29,6 +27,10 @@ const PickerScreen = props => {
             inputRange: [0, 1],
             outputRange: ['0deg', '360deg'],
           })
+          // Get value of total degrees spun around
+          // The original output from interpolation looked
+          // like a string like 536.031343deg but parseFloat returned NaN
+          // Using __getValue() seems to return a string
           .__getValue(),
       );
 
