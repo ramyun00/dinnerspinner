@@ -1,4 +1,5 @@
 import * as errorActions from '../errors/errorActions';
+import Env from '../../Env';
 
 export const SET_USER_LOCATION = 'SET_USER_LOCATION';
 export const SIGNUP = 'SIGNUP';
@@ -7,7 +8,7 @@ export const signup = (email, password) => {
   return async dispatch => {
     console.log('signup', email, password);
     const response = await fetch(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCwNGHgJNGAgGDchziE0BKF-7sq0XDiYzU',
+      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${Env.GOOGLE_SIGNUP_KEY}`,
       {
         method: 'POST',
         headers: {
@@ -28,7 +29,6 @@ export const signup = (email, password) => {
       dispatch(errorActions.setError(resData.error.message));
     }
 
-    console.log('user sign up response', resData);
     dispatch({
       type: SIGNUP,
       token: resData.idToken,

@@ -1,5 +1,0 @@
-export default {
-  GOOGLE_MAPS_KEY: 'AIzaSyDGDp8lfwnPrzu8TvcgZ4-RE8T50G38Xxs',
-  EDAMAM_APP_KEY: '4d9cb1831562bd6642b188017f727ffd',
-  EDAMAM_APP_ID: '14285688',
-};
